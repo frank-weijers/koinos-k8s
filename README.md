@@ -124,6 +124,19 @@ kubectl delete -n default deploy config
 kubectl apply -f .\k8s\1-node\koiner-namespace.yaml,.\k8s\1-node\koinos-data-persistentvolumeclaim.yaml,.\k8s\1-node\config-deployment.yaml,.\k8s\1-node\amqp-service.yaml,.\k8s\1-node\jsonrpc-tcp-service.yaml,.\k8s\1-node\p2p-service.yaml,.\k8s\1-node\amqp-deployment.yaml,.\k8s\1-node\block-producer-deployment.yaml,.\k8s\1-node\block-store-deployment.yaml,.\k8s\1-node\chain-deployment.yaml,.\k8s\1-node\contract-meta-store-deployment.yaml,.\k8s\1-node\jsonrpc-deployment.yaml,.\k8s\1-node\mempool-deployment.yaml,.\k8s\1-node\p2p-deployment.yaml,.\k8s\1-node\transaction-store-deployment.yaml
 ```
 
+#### Troubleshooting
+When running into connection problems like the following message and the chain isn't syncing, it might help to redeploy the deployments.
+```shell
+2022-05-27 09:48:58.766811 (chain.Koinos) [client.cpp:437] <warning>: No response to client request with correlation ID: 3XMXWhEQLtGUChHDv7NKF8TUD8fwHm2G, within 1000ms
+
+# Delete deployments
+kubectl delete -n koinos4 deploy --all
+
+# Redeploy
+kubectl apply -f .\k8s\1-node
+```
+
+
 ### Delete deployments
 ```
 kubectl delete -n koinos deploy,svc,pvc --all
