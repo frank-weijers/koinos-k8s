@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: config
+  name: config
+  namespace: koinos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: config
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: config
+    spec:
+      containers:
+        - image: {username}/{repository}:{version}
+          name: config
+          env:
+            - name: DESCRIPTORS_TAG
+              value: master
+          volumeMounts:
+            - mountPath: /koinos
+              name: koinos-data
+      restartPolicy: Always
+      volumes:
+        - name: koinos-data
+          persistentVolumeClaim:
+            claimName: koinos-data

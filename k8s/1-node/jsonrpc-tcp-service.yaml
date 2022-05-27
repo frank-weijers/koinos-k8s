@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.type: LoadBalancer
+  labels:
+    service: jsonrpc-tcp
+  name: jsonrpc-tcp
+  namespace: koinos
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 8080
+  selector:
+    service: jsonrpc
+  type: LoadBalancer

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: amqp
+  name: amqp
+  namespace: koinos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: amqp
+  template:
+    metadata:
+      labels:
+        service: amqp
+    spec:
+      containers:
+        - image: rabbitmq:3-management
+          name: amqp
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+      restartPolicy: Always

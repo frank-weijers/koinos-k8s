@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    service.type: LoadBalancer
+  labels:
+    service: jsonrpc
+  name: jsonrpc
+  namespace: koinos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: jsonrpc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        service.type: LoadBalancer
+      labels:
+        service: jsonrpc
+    spec:
+      containers:
+        - args:
+            - --basedir=/koinos
+          image: koinos/koinos-jsonrpc:v0.3.0
+          name: jsonrpc
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /koinos
+              name: koinos-data
+      restartPolicy: Always
+      volumes:
+        - name: koinos-data
+          persistentVolumeClaim:
+            claimName: koinos-data

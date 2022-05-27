@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: block-producer
+  name: block-producer
+  namespace: koinos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: block-producer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: block-producer
+    spec:
+      containers:
+        - args:
+            - --basedir=/koinos
+          image: koinos/koinos-block-producer:v0.3.0
+          name: block-producer
+          volumeMounts:
+            - mountPath: /koinos
+              name: koinos-data
+      restartPolicy: Always
+      volumes:
+        - name: koinos-data
+          persistentVolumeClaim:
+            claimName: koinos-data

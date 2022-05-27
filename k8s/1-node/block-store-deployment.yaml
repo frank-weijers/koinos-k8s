@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: block-store
+  name: block-store
+  namespace: koinos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: block-store
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: block-store
+    spec:
+      containers:
+        - args:
+            - --basedir=/koinos
+          image: koinos/koinos-block-store:v0.3.0
+          name: block-store
+          volumeMounts:
+            - mountPath: /koinos
+              name: koinos-data
+      restartPolicy: Always
+      volumes:
+        - name: koinos-data
+          persistentVolumeClaim:
+            claimName: koinos-data

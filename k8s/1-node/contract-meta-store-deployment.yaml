@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: contract-meta-store
+  name: contract-meta-store
+  namespace: koinos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: contract-meta-store
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: contract-meta-store
+    spec:
+      containers:
+        - args:
+            - --basedir=/koinos
+          image: koinos/koinos-contract-meta-store:v0.3.0
+          name: contract-meta-store
+          volumeMounts:
+            - mountPath: /koinos
+              name: koinos-data
+      restartPolicy: Always
+      volumes:
+        - name: koinos-data
+          persistentVolumeClaim:
+            claimName: koinos-data
