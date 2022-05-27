@@ -1,0 +1,68 @@
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+  name: nginx
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: k8s.io/ingress-nginx
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: koinos-ingress
+  namespace: koinos
+#  annotations:
+#    cert-manager.io/cluster-issuer: "cert-manager-webhook-dnsimple-production"
+spec:
+  ingressClassName: nginx
+  #  tls:
+  #    - hosts:
+  #        - api.example.com
+  #      secretName: api-example-tls
+  #    - hosts:
+  #        - example.com
+  #      secretName: example-tls
+  #    - hosts:
+  #        - jsonrpc.example.com
+  #      secretName: jsonrpc-example-tls
+  defaultBackend:
+    service:
+      name: custom-api
+      port:
+        number: 8000
+  rules:
+    - # host: api.example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: custom-api
+                port:
+                  number: 8000
+    - # host: example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: custom-dapp
+                port:
+                  number: 8000
+    - # host: jsonrpc.example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: jsonrpc-tcp
+                port:
+                  number: 80
