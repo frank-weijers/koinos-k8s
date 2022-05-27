@@ -130,7 +130,7 @@ When running into connection problems like the following message and the chain i
 2022-05-27 09:48:58.766811 (chain.Koinos) [client.cpp:437] <warning>: No response to client request with correlation ID: 3XMXWhEQLtGUChHDv7NKF8TUD8fwHm2G, within 1000ms
 
 # Delete deployments
-kubectl delete -n koinos4 deploy --all
+kubectl delete -n koinos deploy --all
 
 # Redeploy
 kubectl apply -f .\k8s\1-node
