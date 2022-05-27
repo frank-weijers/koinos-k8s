@@ -29,7 +29,7 @@ spec:
   #      secretName: jsonrpc-example-tls
   defaultBackend:
     service:
-      name: example-api
+      name: custom-api
       port:
         number: 8000
   rules:
