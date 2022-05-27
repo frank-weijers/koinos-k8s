@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: custom-api
-          image: {user}/custom-api:{tag}
+          image: {user}/{repository}:{tag}
           env:
             - name: NODE_ENV
               value: "production"
